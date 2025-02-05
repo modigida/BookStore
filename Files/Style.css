@@ -1,0 +1,35 @@
+body {
+    background-color: #F2F1D5;
+    color: #51292B;
+}
+
+.navbar {
+    background-color: #51292B !important;
+}
+
+.navbar .navbar-brand {
+    color: #F2F1D5 !important;
+}
+
+.navbar .nav-link {
+    color: #F2F1D5 !important;
+}
+
+.navbar .dropdown-toggle {
+    color: #F2F1D5;
+}
+
+.hero {
+    background-image: url("Images/BookStoreHeroImage.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    position: relative;
+}
+
+.hero-text {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+}

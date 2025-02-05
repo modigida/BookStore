@@ -1,28 +1,32 @@
+// Hämta och lägg till navbar
 fetch('navbar.html')
-.then(response => response.text())
-.then(data => {
-    document.getElementById('navbar-placeholder').innerHTML = data;
-});
-    
-    const cart = [];
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('navbar-placeholder').innerHTML = data;
 
-    // Update shopping cart
+        // Kör koden som använder elementen från navbar.html efter att de har lagts till i DOM:en
+        initializeCart();
+    });
+
+// Globala variabler för kundvagnen
+const cart = [];
+
+// Funktionen som initierar kundvagnens funktionalitet
+function initializeCart() {
+    const cartDropdown = document.getElementById('cart-dropdown');
+    const cartCount = document.getElementById('cart-count');
+    const emptyMessage = document.getElementById('empty-cart-message');
+
+    // Funktion för att uppdatera kundvagnen
     function updateCart() {
-        const cartDropdown = document.getElementById('cart-dropdown');
-        const cartCount = document.getElementById('cart-count');
-        const emptyMessage = document.getElementById('empty-cart-message');
-
-        // Töm dropdown-menyn
         cartDropdown.innerHTML = `
             <li><strong class="dropdown-header">Din Varukorg</strong></li>
             <li><hr class="dropdown-divider"></li>
         `;
 
         if (cart.length === 0) {
-            // Empty shopping cart message
             cartDropdown.innerHTML += '<li id="empty-cart-message"><em>Din varukorg är tom.</em></li>';
         } else {
-            // Add items in shopping cart drop-down
             cart.forEach((product, index) => {
                 cartDropdown.innerHTML += `
                     <li class="dropdown-item d-flex justify-content-between align-items-center">
@@ -32,22 +36,21 @@ fetch('navbar.html')
                 `;
             });
         }
-
-        // Amount of items in shopping cart
         cartCount.textContent = cart.length;
     }
 
-    // Add item to shopping cart
-    function addToCart(productName) {
+    // Lägg till produkt i kundvagnen
+    window.addToCart = function (productName) {
         cart.push({ name: productName });
         updateCart();
-    }
+    };
 
-    // Delete product from shopping cart 
-    function removeFromCart(index) {
+    // Ta bort produkt från kundvagnen
+    window.removeFromCart = function (index) {
         cart.splice(index, 1);
         updateCart();
-    }
+    };
 
-    // Initialize shopping cart on start
-    document.addEventListener('DOMContentLoaded', updateCart);
+    // Initiera kundvagnen
+    updateCart();
+}

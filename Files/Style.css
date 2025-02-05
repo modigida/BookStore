@@ -33,3 +33,10 @@ body {
     margin-bottom: 30px;
     font-size: 1.5rem;
 }
+
+.footer {
+    color: #51292B;
+    text-align: right;
+    margin-top: 20px;
+    margin-right: 10px;
+}

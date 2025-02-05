@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="Index.html">Bjurslätts Bok Butik</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="Products.html">Böcker</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="About.html">Om Oss</a>
+                </li>
+            </ul>
+
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="cartDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-cart"></i> Varukorg (<span id="cart-count">0</span>)
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cartDropdown" id="cart-dropdown">
+                    <li><strong class="dropdown-header">Din Varukorg</strong></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li id="empty-cart-message"><em>Din varukorg är tom.</em></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+

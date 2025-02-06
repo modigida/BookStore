@@ -82,6 +82,50 @@ a {
     font-size: 1.5rem;
 }
 
+/* Products.html */
+.list-view .book-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.list-view .book-item .card {
+    flex-direction: row;
+    border: none;
+    box-shadow: none;
+}
+
+.list-view .card-img-top {
+    width: 150px;
+    height: auto;
+    margin-right: 1rem;
+}
+
+.list-view .card-body {
+    flex-grow: 1;
+}
+
+.card {
+    background-color: transparent;
+    border: none; 
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    margin-top: 10px; 
+    font-size: 1.5rem; 
+}
+
+.card-img-top {
+    height: 250px;
+    width: auto;
+    object-fit: contain;
+}
+
+
 .footer {
     color: #51292B;
     text-align: right;

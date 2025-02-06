@@ -1,23 +1,23 @@
-    // Hämta formuläret
+    // Fetch formular
     const form = document.getElementById("tipsForm");
 
     form.addEventListener("submit", function (event) {
-        // Förhindra att sidan laddas om
+        // Prevent page reload
         event.preventDefault();
 
-        // Visa tackmeddelande
+        // Display message
         const modalBody = document.querySelector("#tipsModal .modal-body");
         modalBody.innerHTML = `<div class="alert alert-success" role="alert">Tack för tipset!</div>`;
 
-        // Stäng modalen efter 2 sekunder
+        // Close modal after 2 sec
         setTimeout(() => {
             const tipsModal = bootstrap.Modal.getInstance(document.getElementById("tipsModal"));
             tipsModal.hide();
 
-            // Återställ formuläret
+            // Reset formular
             form.reset();
 
-            // Återställ modalens innehåll
+            // Reset modal 
             modalBody.innerHTML = `
                 <form id="tipsForm">
                     <div class="mb-3">

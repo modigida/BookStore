@@ -87,6 +87,7 @@ a {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
+    width: 100%;
 }
 
 .list-view .book-item .card {

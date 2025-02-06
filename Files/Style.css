@@ -24,14 +24,14 @@ a {
 }
 
 .navbar-toggler {
-    background-color: #F2F1D5;
+    background-color: #51292B;
     border: 2px solid #F2F1D5;
     border-radius: 5px;
     padding: 0.5rem;
 }
 
 .navbar-toggler-icon {
-    background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 width%3D%2230%22 height%3D%2230%22 viewBox%3D%220 0 30 30%22%3E%3Cpath stroke%3D%22%2351292B%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-miterlimit%3D%2210%22 d%3D%22M4 7h22M4 15h22M4 23h22%22/%3E%3C/svg%3E');
+    background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 width%3D%2230%22 height%3D%2230%22 viewBox%3D%220 0 30 30%22%3E%3Cpath stroke%3D%22%23F2F1D5%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-miterlimit%3D%2210%22 d%3D%22M4 7h22M4 15h22M4 23h22%22/%3E%3C/svg%3E');
 }
 
 .navbar-toggler:focus, 

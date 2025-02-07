@@ -126,6 +126,31 @@ a {
     object-fit: contain;
 }
 
+/* Layout Toggle Buttons */
+#toggle-view-btn {
+    background-color: #F2F1D5;
+    border-color: #51292B;
+    transition: all 0.3s ease;
+}
+
+#toggle-view-btn:hover {
+    background-color: #F2F1D5;
+    border-color: #51292B;
+    scale: 110%;
+}
+
+#toggle-icon {
+    color: #51292B;
+    transition: color 0.3s ease;
+}
+
+#toggle-icon.bi-grid {
+    color: #51292B;
+}
+
+#toggle-icon.bi-list {
+    color: #51292B;
+}
 
 .footer {
     color: #51292B;

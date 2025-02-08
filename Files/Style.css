@@ -140,6 +140,10 @@ a {
     object-fit: contain;
 }
 
+.book-item {
+    cursor: pointer;
+}
+
 /* Layout Toggle Buttons */
 #toggle-view-btn {
     background-color: #F2F1D5;

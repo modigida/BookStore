@@ -30,8 +30,8 @@ toggleBtn.addEventListener('click', () => {
     }
 });
 
-// Get book from information OpenLibrary API
-async function fetchBookData(isbn) {
+// Get short book data (title and image)
+async function fetchBookSummaryData(isbn) {
     const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
 
     try {
@@ -61,7 +61,44 @@ async function fetchBookData(isbn) {
     }
 }
 
-// Create book item and add to DOM
+// Get detailed book data for the modal
+async function fetchBookData(isbn) {
+    const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const bookKey = `ISBN:${isbn}`;
+        if (data[bookKey]) {
+            const book = data[bookKey];
+            return {
+                title: book.title,
+                authors: book.authors ? book.authors.map(author => author.name) : [],
+                numberOfPages: book.number_of_pages || 'N/A',
+                publisher: book.publishers ? book.publishers[0].name : 'Unknown Publisher',
+                publishDate: book.publish_date || 'Unknown Date',
+                publishPlace: book.publish_places ? book.publish_places[0].name : 'Unknown Place',
+                isbn: isbn,
+                imageUrl: book.cover ? book.cover.medium : 'https://via.placeholder.com/150?text=No+Cover',
+            };
+        } else {
+            console.error(`No data found for ISBN: ${isbn}`);
+            return {
+                title: 'Unknown Title',
+                imageUrl: 'https://via.placeholder.com/150?text=No+Cover',
+            };
+        }
+    } catch (error) {
+        console.error(`Error fetching data for ISBN: ${isbn}`, error);
+        return {
+            title: 'Error fetching data',
+            imageUrl: 'https://via.placeholder.com/150?text=Error',
+        };
+    }
+}
+
+// Create book item and add to DOM (using fetchBookSummaryData)
 function createBookCard(title, imageUrl, isbn) {
     const colDiv = document.createElement('div');
     colDiv.className = 'col book-item';
@@ -100,11 +137,9 @@ function createBookCard(title, imageUrl, isbn) {
 async function openBookModal(isbn) {
     const bookData = await fetchBookData(isbn);
 
-    // Set modal content
     document.getElementById('bookModalLabel').textContent = bookData.title;
     document.getElementById('bookModalImage').src = bookData.imageUrl;
 
-    // Check if description, author, etc. exist in bookData
     const author = bookData.authors ? bookData.authors.join(', ') : 'Okänd';
     const numberOfPages = bookData.numberOfPages === "N/A" ? 'Okänt antal sidor' : (bookData.numberOfPages || 'Okänt antal sidor');
     const publisher = bookData.publisher === "Unknown" ? 'Okänt förlag' : (bookData.publisher || 'Okänt förlag');
@@ -112,8 +147,6 @@ async function openBookModal(isbn) {
     const publishPlace = bookData.publishPlace === "Unknown Place" ? 'Okänd plats' : (bookData.publishPlace || 'Okänd plats');
     const isbnNumber = bookData.isbn === "N/A" ? 'Okänt ISBN' : (bookData.isbn || 'Okänt ISBN');
 
-
-    // Populate modal with book details
     document.getElementById('bookModalAuthor').textContent = author;
     document.getElementById('bookModalPages').textContent = numberOfPages;
     document.getElementById('bookModalPublisher').textContent = publisher;
@@ -122,54 +155,16 @@ async function openBookModal(isbn) {
     document.getElementById('bookModalPublishPlace').textContent = publishPlace;
     document.getElementById('bookModalISBN').textContent = isbnNumber;
 
-    // Show the modal
     const myModal = new bootstrap.Modal(document.getElementById('bookModal'));
     myModal.show();
 }
 
-// Fetch book data from API
-async function fetchBookData(isbn) {
-    const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        const bookKey = `ISBN:${isbn}`;
-        if (data[bookKey]) {
-            const book = data[bookKey];
-            return {
-                title: book.title,
-                authors: book.authors ? book.authors.map(author => author.name) : [],
-                numberOfPages: book.number_of_pages || 'N/A',
-                publisher: book.publishers ? book.publishers[0].name : 'Unknown Publisher',
-                publishDate: book.publish_date || 'Unknown Date',
-                publishPlace: book.publish_places ? book.publish_places[0].name : 'Unknown Place',
-                isbn: isbn,  // Returning the ISBN
-                imageUrl: book.cover ? book.cover.medium : 'https://via.placeholder.com/150?text=No+Cover',
-            };
-        } else {
-            console.error(`No data found for ISBN: ${isbn}`);
-            return {
-                title: 'Unknown Title',
-                imageUrl: 'https://via.placeholder.com/150?text=No+Cover',
-            };
-        }
-    } catch (error) {
-        console.error(`Error fetching data for ISBN: ${isbn}`, error);
-        return {
-            title: 'Error fetching data',
-            imageUrl: 'https://via.placeholder.com/150?text=Error',
-        };
-    }
-}
-
-// Load all books from ISBN-array
+// Load all books from ISBN-array using fetchBookSummaryData for basic display
 async function loadBooks() {
     booksContainer.innerHTML = '';
 
     for (const isbn of isbnList) {
-        const bookData = await fetchBookData(isbn);
+        const bookData = await fetchBookSummaryData(isbn);
         const bookCard = createBookCard(bookData.title, bookData.imageUrl, isbn);
         booksContainer.appendChild(bookCard);
     }

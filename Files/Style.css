@@ -67,6 +67,20 @@ a {
         color: #F2F1D5;
     }
 
+@media (min-width: 992px) {
+    .dropdown-menu {
+        right: 0 !important;
+        left: auto !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .dropdown-menu {
+        left: 0 !important;
+        right: auto !important; 
+    }
+}
+
 .hero {
     background-image: url("Images/BookStoreHeroImage.jpg");
     background-size: cover;

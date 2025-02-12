@@ -10,6 +10,21 @@ const isbnList = [
     '9780399590504', '9781471156267', '9780062797155', '9780399167065'
 ];
 
+// Check if books are already in localStorage
+function checkForCachedBooks() {
+    const cachedBooks = localStorage.getItem('books');
+
+    console.log('Cached Books:', cachedBooks);
+
+    if (cachedBooks) {
+        // If cached books exist, load them from storage
+        displayBooks(JSON.parse(cachedBooks));
+    } else {
+        // If no cached books, fetch and store them
+        loadBooks();
+    }
+}
+
 // Grid as default layout
 let isGridView = true;
 
@@ -30,13 +45,15 @@ toggleBtn.addEventListener('click', () => {
     }
 });
 
-// Get short book data (title and image)
+// Fetch book summary data (title and image)
 async function fetchBookSummaryData(isbn) {
     const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
 
     try {
         const response = await fetch(url);
         const data = await response.json();
+
+        console.log(data);
 
         const bookKey = `ISBN:${isbn}`;
         if (data[bookKey]) {
@@ -68,6 +85,8 @@ async function fetchBookData(isbn) {
     try {
         const response = await fetch(url);
         const data = await response.json();
+
+        console.log(data);
 
         const bookKey = `ISBN:${isbn}`;
         if (data[bookKey]) {
@@ -133,42 +152,41 @@ function createBookCard(title, imageUrl, isbn) {
     return colDiv;
 }
 
+// Function to display books from cached or fetched data
+function displayBooks(books) {
+    booksContainer.innerHTML = '';
+    books.forEach(book => {
+        const bookCard = createBookCard(book.title, book.imageUrl, book.isbn);
+        booksContainer.appendChild(bookCard);
+    });
+}
+
 // Open modal and fetch detailed book info
-async function openBookModal(isbn) {
-    const bookData = await fetchBookData(isbn);
 
-    document.getElementById('bookModalLabel').textContent = bookData.title;
-    document.getElementById('bookModalImage').src = bookData.imageUrl;
-
-    const author = bookData.authors ? bookData.authors.join(', ') : 'Okänd';
-    const numberOfPages = bookData.numberOfPages === "N/A" ? 'Okänt antal sidor' : (bookData.numberOfPages || 'Okänt antal sidor');
-    const publisher = bookData.publisher === "Unknown" ? 'Okänt förlag' : (bookData.publisher || 'Okänt förlag');
-    const publishDate = bookData.publishDate === "N/A" ? 'Okänt publiceringsår' : (bookData.publishDate || 'Okänt publiceringsår');
-    const publishPlace = bookData.publishPlace === "Unknown Place" ? 'Okänd plats' : (bookData.publishPlace || 'Okänd plats');
-    const isbnNumber = bookData.isbn === "N/A" ? 'Okänt ISBN' : (bookData.isbn || 'Okänt ISBN');
-
-    document.getElementById('bookModalAuthor').textContent = author;
-    document.getElementById('bookModalPages').textContent = numberOfPages;
-    document.getElementById('bookModalPublisher').textContent = publisher;
-    const publishYear = new Date(publishDate).getFullYear();
-    document.getElementById('bookModalPublishDate').textContent = publishYear;
-    document.getElementById('bookModalPublishPlace').textContent = publishPlace;
-    document.getElementById('bookModalISBN').textContent = isbnNumber;
-
-    const myModal = new bootstrap.Modal(document.getElementById('bookModal'));
-    myModal.show();
+// Preload images before displaying them
+function preloadImages(imageUrls) {
+    imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+    });
 }
 
 // Load all books from ISBN-array using fetchBookSummaryData for basic display
 async function loadBooks() {
-    booksContainer.innerHTML = '';
+    const books = [];
 
     for (const isbn of isbnList) {
         const bookData = await fetchBookSummaryData(isbn);
-        const bookCard = createBookCard(bookData.title, bookData.imageUrl, isbn);
-        booksContainer.appendChild(bookCard);
+        books.push({ title: bookData.title, imageUrl: bookData.imageUrl, isbn: isbn });
     }
+
+    preloadImages(imageUrls);
+
+    localStorage.setItem('books', JSON.stringify(books));
+
+    // Display books on page
+    displayBooks(books);
 }
 
 // Load books when page is loaded
-loadBooks();
+checkForCachedBooks();

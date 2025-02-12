@@ -191,6 +191,74 @@ a {
     color: #51292B;
 }
 
+.modal .modal-book-content .modal-body,
+.modal .modal-book-content .modal-footer {
+    background-color: #F2F1D5;
+    color: #51292B;
+}
+
+.modal .modal-book-content .modal-header {
+    background-color: #51292B;
+    color: #F2F1D5;
+}
+
+.modal-header {
+    border-color: #51292B;
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+.modal-footer {
+    border-color: transparent;
+}
+
+.modal .modal-footer .btn {
+    background-color: #F2F1D5;
+    border-color: #51292B;
+    color: #51292B;
+}
+
+.modal .modal-tips-content .modal-body {
+    background-color: #F2F1D5;
+    color: #51292B;
+}
+
+.modal .modal-tips-content .modal-header {
+    background-color: #51292B;
+    color: #F2F1D5;
+}
+
+.modal-header {
+    border-color: #51292B;
+}
+
+.modal .modal-body input {
+    background-color: #F2F1D5;
+    border: 1px solid #51292B;
+    color: #51292B;
+    padding: 8px;
+}
+
+.modal .modal-body input:focus,
+.modal .modal-body input:hover,
+.modal .modal-body input:active{
+    box-shadow: none;
+}
+
+.modal .modal-body .btn {
+    background-color: #F2F1D5;
+    border-color: #51292B;
+    color: #51292B;
+}
+
+.modal .modal-body .alert {
+    background-color: #F2F1D5 !important;
+    border-color: #51292B !important;
+    color: #51292B !important;
+}
+
 .footer {
     color: #51292B;
     text-align: right;

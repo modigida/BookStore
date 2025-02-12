@@ -161,8 +161,6 @@ function displayBooks(books) {
     });
 }
 
-// Open modal and fetch detailed book info
-
 // Preload images before displaying them
 function preloadImages(imageUrls) {
     imageUrls.forEach(url => {

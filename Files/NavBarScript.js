@@ -142,7 +142,7 @@ function updateCart() {
                 <li class="dropdown-item">
                     <div class="d-flex align-items-center">
                         <img src="${item.imageUrl}" alt="${item.name}" style="width:40px; cursor:pointer;" onclick="openBookModalFromCart('${item.isbn}')">
-                        <span style="margin-left: 10px; cursor:pointer;" onclick="openBookModalFromCart('${item.isbn}')">${item.name}</span>
+                        <span class="cart-title" style="margin-left: 10px; cursor:pointer;" onclick="openBookModalFromCart('${item.isbn}')">${item.name}</span>
                         <div class="ms-auto d-flex align-items-center">
                             <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation(); decrementQuantity('${item.isbn}')">-</button>
                             <span class="mx-2">${item.quantity}</span>

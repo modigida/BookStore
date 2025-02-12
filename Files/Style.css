@@ -67,6 +67,27 @@ a {
         color: #F2F1D5;
     }
 
+.cart-title {
+    margin-right: 20px;
+  }
+  
+  .dropdown-item:hover,
+  .dropdown-item:focus,
+  .dropdown-item:active {
+    background-color: transparent !important;
+  }
+  
+.dropdown-item .d-flex .btn {
+    color: #F2F1D5;
+    border-color: #F2F1D5;;
+}
+
+.dropdown-item .d-flex .btn:hover,
+.dropdown-item .d-flex .btn:focus,
+.dropdown-item .d-flex .btn:active {
+    background-color: transparent !important;
+}
+
 @media (min-width: 992px) {
     .dropdown-menu {
         right: 0 !important;

@@ -1,4 +1,3 @@
-// Fetch and add navbar
 fetch('navbar.html')
     .then(response => response.text())
     .then(data => {
@@ -8,10 +7,8 @@ fetch('navbar.html')
     })
     .catch(error => console.log("Fel vid laddning av navbar:", error));
 
-// Cart items
-const cart = [];
+let cart = [];
 
-// Initialize cart functions
 function initializeCart() {
     const cartDropdown = document.getElementById('cart-dropdown');
     const cartCount = document.getElementById('cart-count');
@@ -20,6 +17,17 @@ function initializeCart() {
         console.error("Kundvagnselement kunde inte hittas!");
         return;
     }
+
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+        try {
+            cart = JSON.parse(storedCart);
+        } catch (e) {
+            console.error("Kunde inte parsa sparad cart-data:", e);
+            cart = [];
+        }
+    }
+
     window.addToCart = addToCart;
     window.incrementQuantity = incrementQuantity;
     window.decrementQuantity = decrementQuantity;
@@ -146,6 +154,8 @@ function updateCart() {
         });
     }
     cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+
+    localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function openBookModalFromCart(isbn) {

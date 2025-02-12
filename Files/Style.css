@@ -1,6 +1,7 @@
 body {
     background-color: #F2F1D5;
     color: #51292B;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 a {
@@ -118,6 +119,15 @@ a {
 }
 
 /* Books.html */
+h1 {
+    text-align: center;
+    width: 100%;
+}
+
+.d-flex {
+    justify-content: flex-start;
+}
+
 .list-view .book-item {
     display: flex;
     align-items: center;
@@ -153,6 +163,7 @@ a {
 .card-title {
     margin-top: 10px; 
     font-size: 1.5rem; 
+    color: #51292B;
 }
 
 .card-img-top {
@@ -260,7 +271,8 @@ a {
 }
 
 .footer {
-    color: #51292B;
+    color: #8C796D;
+    font-family: 'Arial', sans-serif;
     text-align: right;
     margin-top: 20px;
     margin-right: 10px;

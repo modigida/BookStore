@@ -15,7 +15,7 @@ function checkForCachedBooks() {
     const cachedBooks = localStorage.getItem('books');
 
     console.log('Cached Books:', cachedBooks);
-    
+
     if (cachedBooks) {
         // If cached books exist, load them from storage
         displayBooks(JSON.parse(cachedBooks));
@@ -187,6 +187,14 @@ async function openBookModal(isbn) {
     myModal.show();
 }
 
+// Preload images before displaying them
+function preloadImages(imageUrls) {
+    imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+    });
+}
+
 // Load all books from ISBN-array using fetchBookSummaryData for basic display
 async function loadBooks() {
     const books = [];
@@ -196,7 +204,8 @@ async function loadBooks() {
         books.push({ title: bookData.title, imageUrl: bookData.imageUrl, isbn: isbn });
     }
 
-    // Store books in localStorage for future use
+    preloadImages(imageUrls);
+
     localStorage.setItem('books', JSON.stringify(books));
 
     // Display books on page

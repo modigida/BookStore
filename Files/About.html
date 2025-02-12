@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,23 +18,23 @@
     <div class="container text-center my-5">
         <h1 class="mb-4">Om Bjurslätts Bok Butik</h1>
         <p class="text-start">
-            Vi är en lokal liten bok butik i hjärtat av Hisingen - Bjurslätts Torg. Till oss kan du komma 
-            för att hitta nya guldkorn att läsa. Vårt sortiment är med omsorg handplockat av vår personal. 
-            Vi vill sprida läsglädje till våra medmänniskor och dela med oss av våra bästa tips. Därför är 
-            även just du varmt välkommen att inkomma med tips om nya böcker vi bör utöka vårt sortiment med. 
+            Vi är en lokal liten bok butik i hjärtat av Hisingen - Bjurslätts Torg. Till oss kan du komma
+            för att hitta nya guldkorn att läsa. Vårt sortiment är med omsorg handplockat av vår personal.
+            Vi vill sprida läsglädje till våra medmänniskor och dela med oss av våra bästa tips. Därför är
+            även just du varmt välkommen att inkomma med tips om nya böcker vi bör utöka vårt sortiment med.
             Detta gör du <a href="#" data-bs-toggle="modal" data-bs-target="#tipsModal">HÄR</a>.
         </p>
         <p class="text-start">
-            I vår butik har vi en mysig hemliknande miljö. Utöver att komma hit för att köpa böcker kan du 
+            I vår butik har vi en mysig hemliknande miljö. Utöver att komma hit för att köpa böcker kan du
             även komma hit och dricka en kopp kaffe och läsa i våra härliga fåtöljer omgivna av bokhyllor med
-            ny läsinspiration. 
+            ny läsinspiration.
         </p>
 
         <main class="container my-5">
             <h2 class="mt-5">Kontakta oss:</h2>
             <div class="d-flex align-items-start justify-content-center">
                 <p class="me-3">
-                    Tel: 070- 123 45 67 <br/>
+                    Tel: 070- 123 45 67 <br />
                     E-post: <a href="mailto:info@bjurslattsbokbutik.se">info@bjurslattsbokbutik.se</a>
                 </p>
             </div>
@@ -43,7 +44,7 @@
             <h2 class="mt-5">Öppettider:</h2>
             <div class="d-flex align-items-start justify-content-center">
                 <p class="me-3">
-                    Mån-fre: 10-18 <br/>
+                    Mån-fre: 10-18 <br />
                     Lör-sön: 11-16
                 </p>
             </div>
@@ -53,17 +54,15 @@
             <h2>Hitta hit:</h2>
             <div class="d-flex align-items-start justify-content-center">
                 <address class="me-3">
-                    Bjurslätts Bok Butik <br/>
-                    Bjurslätts Torg 2 <br/>
+                    Bjurslätts Bok Butik <br />
+                    Bjurslätts Torg 2 <br />
                     417 25 Göteborg
                 </address>
 
                 <div class="ratio ratio-4x3" style="max-width: 400px;">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2130.252979438599!2d11.924558676879165!3d57.72914597387932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x464f8b526304c155%3A0x983a9eb86882b596!2sBjursl%C3%A4tts%20Torg%202%2C%20417%2025%20G%C3%B6teborg!5e0!3m2!1sen!2sse!4v1738764825262!5m2!1sen!2sse" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade"
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2130.252979438599!2d11.924558676879165!3d57.72914597387932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x464f8b526304c155%3A0x983a9eb86882b596!2sBjursl%C3%A4tts%20Torg%202%2C%20417%2025%20G%C3%B6teborg!5e0!3m2!1sen!2sse!4v1738764825262!5m2!1sen!2sse"
+                        style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
                         title="Google Maps - Bjurslätts Torg, Göteborg">
                     </iframe>
                 </div>
@@ -71,9 +70,6 @@
         </main>
     </div>
 
-    
-    <div id="footer-placeholder"></div>
-    
     <!-- Modal for tips -->
     <div class="modal fade" id="tipsModal" tabindex="-1" aria-labelledby="tipsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -90,7 +86,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="bookAuthor" class="form-label">Författare (valfritt)</label>
-                            <input type="text" class="form-control" id="bookAuthor" placeholder="Skriv författarens namn">
+                            <input type="text" class="form-control" id="bookAuthor"
+                                placeholder="Skriv författarens namn">
                         </div>
                         <div class="mb-3">
                             <label for="yourEmail" class="form-label">Din e-post (valfritt)</label>
@@ -103,9 +100,44 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookModalLabel">Boktitel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column flex-lg-row">
+                        <img id="bookModalImage" src="" alt="Bokomslag" class="img-fluid rounded me-4"
+                            style="max-width: 200px;">
+                        <div>
+                            <p><strong>Författare:</strong> <span id="bookModalAuthor">Okänd</span></p>
+                            <p><strong>Antal sidor:</strong> <span id="bookModalPages">Okänt antal sidor</span></p>
+                            <p><strong>Förlag:</strong> <span id="bookModalPublisher">Okänt förlag</span></p>
+                            <p><strong>Publiceringsår:</strong> <span id="bookModalPublishDate">Okänt
+                                    publiceringsår</span></p>
+                            <p><strong>Publiceringsplats:</strong> <span id="bookModalPublishPlace">Okänd plats</span>
+                            </p>
+                            <p><strong>ISBN:</strong> <span id="bookModalISBN">Okänt ISBN</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="add-to-cart-btn" type="button" class="btn btn-primary">
+                        <i class="bi bi-cart"></i> Lägg till i varukorgen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
 
     <script src="NavBarScript.js"></script>
     <script src="TipsFormScript.js"></script>
     <script src="Footer.js"></script>
 </body>
+
 </html>

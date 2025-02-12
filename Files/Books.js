@@ -162,30 +162,6 @@ function displayBooks(books) {
 }
 
 // Open modal and fetch detailed book info
-async function openBookModal(isbn) {
-    const bookData = await fetchBookData(isbn);
-
-    document.getElementById('bookModalLabel').textContent = bookData.title;
-    document.getElementById('bookModalImage').src = bookData.imageUrl;
-
-    const author = bookData.authors ? bookData.authors.join(', ') : 'Okänd';
-    const numberOfPages = bookData.numberOfPages === "N/A" ? 'Okänt antal sidor' : (bookData.numberOfPages || 'Okänt antal sidor');
-    const publisher = bookData.publisher === "Unknown" ? 'Okänt förlag' : (bookData.publisher || 'Okänt förlag');
-    const publishDate = bookData.publishDate === "N/A" ? 'Okänt publiceringsår' : (bookData.publishDate || 'Okänt publiceringsår');
-    const publishPlace = bookData.publishPlace === "Unknown Place" ? 'Okänd plats' : (bookData.publishPlace || 'Okänd plats');
-    const isbnNumber = bookData.isbn === "N/A" ? 'Okänt ISBN' : (bookData.isbn || 'Okänt ISBN');
-
-    document.getElementById('bookModalAuthor').textContent = author;
-    document.getElementById('bookModalPages').textContent = numberOfPages;
-    document.getElementById('bookModalPublisher').textContent = publisher;
-    const publishYear = new Date(publishDate).getFullYear();
-    document.getElementById('bookModalPublishDate').textContent = publishYear;
-    document.getElementById('bookModalPublishPlace').textContent = publishPlace;
-    document.getElementById('bookModalISBN').textContent = isbnNumber;
-
-    const myModal = new bootstrap.Modal(document.getElementById('bookModal'));
-    myModal.show();
-}
 
 // Preload images before displaying them
 function preloadImages(imageUrls) {

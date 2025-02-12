@@ -18,15 +18,10 @@ function initializeCart() {
     const cartCount = document.getElementById('cart-count');
     const emptyMessage = document.getElementById('empty-cart-message');
 
-
-    console.log("cartDropdown:", cartDropdown);
-    console.log("cartCount:", cartCount);
-
     if (!cartDropdown || !cartCount) {
         console.error("Kundvagnselement kunde inte hittas!");
         return;
     }
-
 
     // Update cart
     function updateCart() {
@@ -65,3 +60,30 @@ function initializeCart() {
     // Initialize cart
     updateCart();
 }
+
+// Open modal and fetch detailed book info
+async function openBookModal(isbn) {
+    const bookData = await fetchBookData(isbn);
+
+    document.getElementById('bookModalLabel').textContent = bookData.title;
+    document.getElementById('bookModalImage').src = bookData.imageUrl;
+    
+    const author = bookData.authors ? bookData.authors.join(', ') : 'Okänd';
+    document.getElementById('bookModalAuthor').textContent = author;
+
+    const addToCartButton = document.getElementById('add-to-cart-btn');
+    if (addToCartButton) {
+        addToCartButton.replaceWith(addToCartButton.cloneNode(true));
+        const freshAddToCartButton = document.getElementById('add-to-cart-btn');
+
+        freshAddToCartButton.addEventListener('click', () => {
+            addToCart(bookData.title);
+        });
+    } else {
+        console.error("Kunde inte hitta knappen 'add-to-cart-btn' i modalen!");
+    }
+
+    const myModal = new bootstrap.Modal(document.getElementById('bookModal'));
+    myModal.show();
+}
+

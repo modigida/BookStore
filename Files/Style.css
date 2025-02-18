@@ -270,6 +270,24 @@ h1 {
     color: #51292B !important;
 }
 
+
+.map-container {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1 / 1; /* Gör det kvadratiskt */
+    position: relative;
+}
+
+#map-iframe, #map-placeholder {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
 .footer {
     color: #8C796D;
     font-family: 'Arial', sans-serif;

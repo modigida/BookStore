@@ -104,7 +104,7 @@ a {
 }
 
 .hero {
-    background-image: url("Images/BookStoreHeroImage.jpg");
+    background-image: url("Images/BookStoreHeroImage.webp");
     background-size: cover;
     background-position: center;
     height: 500px;
@@ -274,7 +274,7 @@ h1 {
 .map-container {
     width: 100%;
     max-width: 400px;
-    aspect-ratio: 1 / 1; /* Gör det kvadratiskt */
+    aspect-ratio: 1 / 1; 
     position: relative;
 }
 
@@ -286,6 +286,14 @@ h1 {
     left: 0;
 }
 
+@media (max-width: 768px) {
+    .hero-text h1 {
+        font-size: 1.5rem;
+    }
+    .hero {
+        height: 200px;
+    }
+}
 
 
 .footer {

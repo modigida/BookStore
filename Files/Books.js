@@ -25,25 +25,27 @@ function checkForCachedBooks() {
     }
 }
 
-// Grid as default layout
-let isGridView = true;
+if (toggleBtn && toggleIcon && booksContainer) {
+    // Grid as default layout
+    let isGridView = true;
 
-toggleBtn.addEventListener('click', () => {
-    isGridView = !isGridView;
+    toggleBtn.addEventListener('click', () => {
+        isGridView = !isGridView;
 
-    // Change icon and layout 
-    if (isGridView) {
-        toggleIcon.classList.replace('bi-list', 'bi-grid');
-        toggleIcon.classList.add('icon-active');
-        booksContainer.classList.remove('list-view');
-        booksContainer.classList.add('row');
-    } else {
-        toggleIcon.classList.replace('bi-grid', 'bi-list');
-        toggleIcon.classList.remove('icon-active');
-        booksContainer.classList.remove('row');
-        booksContainer.classList.add('list-view');
-    }
-});
+        // Change icon and layout 
+        if (isGridView) {
+            toggleIcon.classList.replace('bi-list', 'bi-grid');
+            toggleIcon.classList.add('icon-active');
+            booksContainer.classList.remove('list-view');
+            booksContainer.classList.add('row');
+        } else {
+            toggleIcon.classList.replace('bi-grid', 'bi-list');
+            toggleIcon.classList.remove('icon-active');
+            booksContainer.classList.remove('row');
+            booksContainer.classList.add('list-view');
+        }
+    });
+}
 
 // Fetch book summary data (title and image)
 async function fetchBookSummaryData(isbn) {
@@ -186,5 +188,12 @@ async function loadBooks() {
     displayBooks(books);
 }
 
-// Load books when page is loaded
-checkForCachedBooks();
+
+document.addEventListener("DOMContentLoaded", () => {
+    const booksContainer = document.getElementById("books-container");
+    
+    if (booksContainer) {
+        // Load books when page is loaded
+        checkForCachedBooks();
+    } 
+});

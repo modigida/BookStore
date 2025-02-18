@@ -1,4 +1,5 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="sv">
 
 <head>
     <meta charset="UTF-8">
@@ -59,10 +60,15 @@
                     417 25 Göteborg
                 </address>
 
-                <div class="ratio ratio-4x3" style="max-width: 400px;">
+                <div class="map-container">
+                    <img id="map-placeholder" src="Images/placeholder-map.jpg" alt="Loading map...">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2130.252979438599!2d11.924558676879165!3d57.72914597387932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x464f8b526304c155%3A0x983a9eb86882b596!2sBjursl%C3%A4tts%20Torg%202%2C%20417%2025%20G%C3%B6teborg!5e0!3m2!1sen!2sse!4v1738764825262!5m2!1sen!2sse"
-                        style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                        id="map-iframe"
+                        src=""
+                        style="border:0; display: none;" 
+                        allowfullscreen
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
                         title="Google Maps - Bjurslätts Torg, Göteborg">
                     </iframe>
                 </div>
@@ -125,7 +131,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    
+
                 </div>
             </div>
         </div>
@@ -135,6 +141,7 @@
 
     <script src="NavBarScript.js"></script>
     <script src="TipsFormScript.js"></script>
+    <script src="Map.js"></script>
     <script src="Footer.js"></script>
 </body>
 

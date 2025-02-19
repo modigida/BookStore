@@ -1,0 +1,94 @@
+.navbar {
+    background-color: #51292B !important;
+}
+
+.navbar .navbar-brand {
+    color: #F2F1D5 !important;
+}
+
+.navbar .nav-link {
+    color: #F2F1D5 !important;
+}
+
+.navbar .dropdown-toggle {
+    color: #F2F1D5;
+}
+
+.navbar-toggler {
+    background-color: #51292B;
+    border: 2px solid #F2F1D5;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 width%3D%2230%22 height%3D%2230%22 viewBox%3D%220 0 30 30%22%3E%3Cpath stroke%3D%22%23F2F1D5%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-miterlimit%3D%2210%22 d%3D%22M4 7h22M4 15h22M4 23h22%22/%3E%3C/svg%3E');
+}
+
+.navbar-toggler:focus, 
+    .navbar-toggler:active {
+        outline: none;
+        box-shadow: none;
+    }
+
+    #cart-dropdown {
+        background-color: #51292B;
+        border: 1px solid #F2F1D5;
+        border-radius: 0.5rem;
+        padding: 0.8rem;
+    }
+
+    #cart-dropdown li {
+        color: #F2F1D5;
+    }
+
+    #empty-cart-message {
+        font-style: italic;
+        font-size: 1rem;
+        color: #F2F1D5;
+    }
+
+    #cart-dropdown .dropdown-divider {
+        border-color: #F2F1D5;
+    }
+
+    #cart-dropdown .dropdown-header {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #F2F1D5;
+    }
+
+.cart-title {
+    margin-right: 20px;
+  }
+  
+  .dropdown-item:hover,
+  .dropdown-item:focus,
+  .dropdown-item:active {
+    background-color: transparent !important;
+  }
+  
+.dropdown-item .d-flex .btn {
+    color: #F2F1D5;
+    border-color: #F2F1D5;;
+}
+
+.dropdown-item .d-flex .btn:hover,
+.dropdown-item .d-flex .btn:focus,
+.dropdown-item .d-flex .btn:active {
+    background-color: transparent !important;
+}
+
+@media (min-width: 992px) {
+    .dropdown-menu {
+        right: 0 !important;
+        left: auto !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .dropdown-menu {
+        left: 0 !important;
+        right: auto !important; 
+    }
+}

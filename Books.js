@@ -237,6 +237,14 @@ function openBookModal(isbn) {
     modal.show();
 }
 
+const closeModal = () => {
+    const modal = document.getElementById("modal");
+    modal.setAttribute("aria-hidden", "true");
+
+    document.getElementById("openModalButton").focus();
+};
+
+
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", () => {

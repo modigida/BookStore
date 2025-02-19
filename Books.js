@@ -18,6 +18,12 @@ function checkForCachedBooks() {
     const now = Date.now();
 
     if (cachedBooks && cacheTimestamp && now - cacheTimestamp < 86400000) {
+        const loadingContainer = document.getElementById('loading-container');
+            if (loadingContainer) {
+                loadingContainer.remove();
+            } else {
+                console.error("Loading-container hittades inte!");
+            }
         displayBooks(JSON.parse(cachedBooks));
     } else {
         loadBooks();
@@ -91,17 +97,42 @@ async function convertImageToFormat(imageUrl, format = 'webp') {
 }
 
 async function loadBooks() {
-    const books = [];
-    for (const isbn of isbnList) {
-        const bookData = await fetchBookSummaryData(isbn);
-        books.push({ title: bookData.title, imageUrl: bookData.imageUrl, isbn: isbn });
-    }
+    let index = 0;
 
-    localStorage.setItem('books', JSON.stringify(books));
-    localStorage.setItem('cacheTimestamp', Date.now()); 
+    const loadNextBatch = async () => {
+        const batch = isbnList.slice(index, index + 4);
+        const batchBooks = [];
 
-    displayBooks(books);
+        for (const isbn of batch) {
+            const bookData = await fetchBookSummaryData(isbn);
+            batchBooks.push({ title: bookData.title, imageUrl: bookData.imageUrl, isbn: isbn });
+        }
+
+        books.push(...batchBooks);
+        displayBooks(batchBooks); 
+
+        if (index === 0) {
+            const loadingContainer = document.getElementById('loading-container');
+            if (loadingContainer) {
+                loadingContainer.remove();
+            } else {
+                console.error("Loading-container hittades inte!");
+            }
+        }
+
+        index += 4;
+
+        if (index < isbnList.length) {
+            loadNextBatch();
+        } else {
+            localStorage.setItem('books', JSON.stringify(books)); 
+            localStorage.setItem('cacheTimestamp', Date.now());
+        }
+    };
+
+    loadNextBatch(); 
 }
+
 
 function createBookCard(title, imageUrl, isbn) {
     const colDiv = document.createElement('div');
@@ -156,18 +187,17 @@ function createCardBody(title) {
 }
 
 function displayBooks(bookList) {
-    books = bookList;
-    const fragment = document.createDocumentFragment();
+   const fragment = document.createDocumentFragment();
     bookList.forEach(book => {
         const bookCard = createBookCard(book.title, book.imageUrl, book.isbn);
         fragment.appendChild(bookCard);
     });
 
-    booksContainer.innerHTML = '';  
-    booksContainer.appendChild(fragment);  
+    booksContainer.appendChild(fragment);
 
-    lazyLoadImages();
+    lazyLoadImages(); 
 }
+
 
 function lazyLoadImages() {
     const images = document.querySelectorAll('img.lazy');
@@ -193,6 +223,7 @@ function lazyLoadImages() {
 }
 
 function openBookModal(isbn) {
+    console.log(isbn);
     const book = books.find(b => b.isbn === isbn);
 
     if (!book) { console.error("Boken hittades inte."); return; }
@@ -203,6 +234,12 @@ function openBookModal(isbn) {
 
     const modal = new bootstrap.Modal(document.getElementById('bookModal'));
     modal.show();
+
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    addToCartBtn.onclick = function () {
+        addToCart(book);
+        showNotification(`${book.title} har lagts till i varukorgen!`);
+    };
 }
 
 const closeModal = () => {
@@ -213,6 +250,7 @@ const closeModal = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOMContentLoaded event triggered.");
     if (booksContainer) {
         checkForCachedBooks();
     }

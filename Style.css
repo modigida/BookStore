@@ -25,7 +25,6 @@ a {
     font-size: 1.5rem;
 }
 
-/* Books.html */
 h1 {
     text-align: center;
     width: 100%;
@@ -33,6 +32,13 @@ h1 {
 
 .d-flex {
     justify-content: flex-start;
+}
+
+#loading-container .spinner-border {
+    color: #51292B !important;
+    width: 5rem;
+    height: 5rem;
+    border-width: 0.3em;
 }
 
 .list-view .book-item {

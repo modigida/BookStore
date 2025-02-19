@@ -72,6 +72,10 @@ function addToCart(bookData) {
         });
     }
     updateCart();
+    const modal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
+    if (modal) {
+            modal.hide();
+    }
 }
 
 function incrementQuantity(isbn) {

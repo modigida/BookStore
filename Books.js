@@ -224,7 +224,6 @@ function lazyLoadImages() {
 
 function openBookModal(isbn) {
     console.log(isbn);
-    console.log(books);
     const book = books.find(b => b.isbn === isbn);
 
     if (!book) { console.error("Boken hittades inte."); return; }
@@ -235,6 +234,12 @@ function openBookModal(isbn) {
 
     const modal = new bootstrap.Modal(document.getElementById('bookModal'));
     modal.show();
+
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    addToCartBtn.onclick = function () {
+        addToCart(book);
+        showNotification(`${book.title} har lagts till i varukorgen!`);
+    };
 }
 
 const closeModal = () => {
@@ -253,6 +258,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Used for development:
 
-window.addEventListener('beforeunload', () => {
+/* window.addEventListener('beforeunload', () => {
     localStorage.clear(); // Tömmer hela localStorage
-}); 
+});  */

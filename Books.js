@@ -223,7 +223,6 @@ function lazyLoadImages() {
 }
 
 function openBookModal(isbn) {
-    console.log(isbn);
     const book = books.find(b => b.isbn === isbn);
 
     if (!book) { console.error("Boken hittades inte."); return; }
@@ -251,6 +250,11 @@ const closeModal = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOMContentLoaded event triggered.");
+    const cachedBooks = localStorage.getItem('books');
+    if (cachedBooks) {
+        books = JSON.parse(cachedBooks);
+    }
+
     if (booksContainer) {
         checkForCachedBooks();
     }

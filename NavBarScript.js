@@ -1,6 +1,9 @@
 fetch('navbar.html')
     .then(response => response.text())
     .then(data => {
+
+        console.log("Load navbar");
+        
         document.getElementById('navbar-placeholder').innerHTML = data;
 
         initializeCart();

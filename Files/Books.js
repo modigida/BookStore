@@ -4,10 +4,10 @@ const booksContainer = document.getElementById('books-container');
 
 // Array with ISBN for accessible books
 const isbnList = [
-    '9789152731130', '9780375842207', '9780571365470', '9780385490818',
+    '9789152731130'/* , '9780375842207', '9780571365470', '9780385490818',
     '9781408728512', '9780743273565', '9780374602604', '9781476738017',
     '9781250301697', '9780735219090', '9780143469131', '9780525559474',
-    '9780399590504', '9781471156267', '9780062797155', '9780399167065'
+    '9780399590504', '9781471156267', '9780062797155', '9780399167065' */
 ];
 
 // Check if books are already in localStorage with expiry
@@ -51,9 +51,14 @@ async function fetchBookSummaryData(isbn) {
         const bookKey = `ISBN:${isbn}`;
         if (data[bookKey]) {
             const book = data[bookKey];
+            const imageUrl = book.cover ? book.cover.medium : 'https://via.placeholder.com/150?text=No+Cover';
+
+            // Konvertera till WebP eller AVIF
+            const convertedImage = await convertImageToFormat(imageUrl, 'webp'); // Ändra till 'avif' om du föredrar det
+
             return {
                 title: book.title,
-                imageUrl: book.cover ? book.cover.medium : 'https://via.placeholder.com/150?text=No+Cover'
+                imageUrl: convertedImage
             };
         }
         return { title: 'Unknown Title', imageUrl: 'https://via.placeholder.com/150?text=No+Cover' };
@@ -62,6 +67,36 @@ async function fetchBookSummaryData(isbn) {
         return { title: 'Error fetching data', imageUrl: 'https://via.placeholder.com/150?text=Error' };
     }
 }
+
+async function convertImageToFormat(imageUrl, format = 'webp') {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous'; // För att undvika CORS-problem
+        img.src = imageUrl;
+
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            // Konvertera bilden till önskat format (webp eller avif)
+            const convertedImageUrl = canvas.toDataURL(`image/${format}`);
+
+            console.log(convertedImageUrl);
+
+            resolve(convertedImageUrl);
+        };
+
+        img.onerror = () => {
+            console.error(`Failed to load image: ${imageUrl}`);
+            resolve(imageUrl); // Använd originalbilden om konverteringen misslyckas
+        };
+    });
+}
+
 
 // Load all books from ISBN-array using fetchBookSummaryData for basic display
 async function loadBooks() {
@@ -107,19 +142,27 @@ function createBookCard(title, imageUrl, isbn) {
 }
 
 // Create and return image element with lazy loading
-function createImageElement(imageUrl, altText) {
+function createImageElement(imageUrl, title) {
+    let altText = "Cover image of " + title;
     const img = document.createElement('img');
     img.className = 'card-img-top lazy';
-    img.dataset.src = imageUrl;  // Use data-src for lazy loading
+    img.dataset.src = imageUrl;  // Lazy loading
     img.alt = altText;
 
-    // Fallback for broken image links
+    // Sätt en fast höjd och en flexibel bredd
+    img.style.height = '200px';  // Anpassa efter behov
+    img.style.width = '100%';  // Fyller hela card-bredden
+    img.style.objectFit = 'contain';  // Ser till att hela bilden visas utan beskärning
+
+    // Fallback för brutna bildlänkar
     img.onerror = () => {
-        img.src = 'https://via.placeholder.com/150?text=No+Cover'; // Fallback image
+        img.src = 'https://via.placeholder.com/150?text=No+Cover';
     };
 
     return img;
 }
+
+
 
 // Create and return the card body with title
 function createCardBody(title) {
@@ -181,3 +224,5 @@ document.addEventListener("DOMContentLoaded", () => {
         checkForCachedBooks();
     }
 });
+
+

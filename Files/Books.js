@@ -10,53 +10,44 @@ const isbnList = [
     '9780399590504', '9781471156267', '9780062797155', '9780399167065'
 ];
 
-// Check if books are already in localStorage
+// Check if books are already in localStorage with expiry
 function checkForCachedBooks() {
+    console.log("Checking for cached books...");
     const cachedBooks = localStorage.getItem('books');
+    const cacheTimestamp = localStorage.getItem('cacheTimestamp');
+    const now = Date.now();
 
-    console.log('Cached Books:', cachedBooks);
-
-    if (cachedBooks) {
-        // If cached books exist, load them from storage
+    if (cachedBooks && cacheTimestamp && now - cacheTimestamp < 86400000) {  // 24 hours in ms
+        // If cached books exist and are not expired, load them from storage
         displayBooks(JSON.parse(cachedBooks));
     } else {
-        // If no cached books, fetch and store them
+        // If no cached books, or expired, fetch and store them
         loadBooks();
     }
 }
 
 if (toggleBtn && toggleIcon && booksContainer) {
-    // Grid as default layout
     let isGridView = true;
+    let debounceTimeout;
 
     toggleBtn.addEventListener('click', () => {
-        isGridView = !isGridView;
-
-        // Change icon and layout 
-        if (isGridView) {
-            toggleIcon.classList.replace('bi-list', 'bi-grid');
-            toggleIcon.classList.add('icon-active');
-            booksContainer.classList.remove('list-view');
-            booksContainer.classList.add('row');
-        } else {
-            toggleIcon.classList.replace('bi-grid', 'bi-list');
-            toggleIcon.classList.remove('icon-active');
-            booksContainer.classList.remove('row');
-            booksContainer.classList.add('list-view');
-        }
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            isGridView = !isGridView;
+            toggleIcon.classList.toggle('bi-grid', isGridView);
+            toggleIcon.classList.toggle('bi-list', !isGridView);
+            booksContainer.classList.toggle('row', isGridView);
+            booksContainer.classList.toggle('list-view', !isGridView);
+        }, 200);  // Adjust debounce delay for user interaction
     });
 }
 
 // Fetch book summary data (title and image)
 async function fetchBookSummaryData(isbn) {
     const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
-
     try {
         const response = await fetch(url);
         const data = await response.json();
-
-        console.log(data);
-
         const bookKey = `ISBN:${isbn}`;
         if (data[bookKey]) {
             const book = data[bookKey];
@@ -64,59 +55,28 @@ async function fetchBookSummaryData(isbn) {
                 title: book.title,
                 imageUrl: book.cover ? book.cover.medium : 'https://via.placeholder.com/150?text=No+Cover'
             };
-        } else {
-            console.error(`No data found for ISBN: ${isbn}`);
-            return {
-                title: 'Unknown Title',
-                imageUrl: 'https://via.placeholder.com/150?text=No+Cover'
-            };
         }
+        return { title: 'Unknown Title', imageUrl: 'https://via.placeholder.com/150?text=No+Cover' };
     } catch (error) {
         console.error(`Error fetching data for ISBN: ${isbn}`, error);
-        return {
-            title: 'Error fetching data',
-            imageUrl: 'https://via.placeholder.com/150?text=Error'
-        };
+        return { title: 'Error fetching data', imageUrl: 'https://via.placeholder.com/150?text=Error' };
     }
 }
 
-// Get detailed book data for the modal
-async function fetchBookData(isbn) {
-    const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        console.log(data);
-
-        const bookKey = `ISBN:${isbn}`;
-        if (data[bookKey]) {
-            const book = data[bookKey];
-            return {
-                title: book.title,
-                authors: book.authors ? book.authors.map(author => author.name) : [],
-                numberOfPages: book.number_of_pages || 'N/A',
-                publisher: book.publishers ? book.publishers[0].name : 'Unknown Publisher',
-                publishDate: book.publish_date || 'Unknown Date',
-                publishPlace: book.publish_places ? book.publish_places[0].name : 'Unknown Place',
-                isbn: isbn,
-                imageUrl: book.cover ? book.cover.medium : 'https://via.placeholder.com/150?text=No+Cover',
-            };
-        } else {
-            console.error(`No data found for ISBN: ${isbn}`);
-            return {
-                title: 'Unknown Title',
-                imageUrl: 'https://via.placeholder.com/150?text=No+Cover',
-            };
-        }
-    } catch (error) {
-        console.error(`Error fetching data for ISBN: ${isbn}`, error);
-        return {
-            title: 'Error fetching data',
-            imageUrl: 'https://via.placeholder.com/150?text=Error',
-        };
+// Load all books from ISBN-array using fetchBookSummaryData for basic display
+async function loadBooks() {
+    const books = [];
+    for (const isbn of isbnList) {
+        const bookData = await fetchBookSummaryData(isbn);
+        books.push({ title: bookData.title, imageUrl: bookData.imageUrl, isbn: isbn });
     }
+
+    // Store in localStorage
+    localStorage.setItem('books', JSON.stringify(books));
+    localStorage.setItem('cacheTimestamp', Date.now());  // Update cache timestamp
+
+    // Display books on page
+    displayBooks(books);
 }
 
 // Create book item and add to DOM (using fetchBookSummaryData)
@@ -127,14 +87,42 @@ function createBookCard(title, imageUrl, isbn) {
 
     const cardDiv = document.createElement('div');
     cardDiv.className = 'card';
-
     cardDiv.dataset.isbn = isbn;
 
-    const img = document.createElement('img');
-    img.className = 'card-img-top';
-    img.src = imageUrl;
-    img.alt = title;
+    // Create and append image with lazy loading
+    const img = createImageElement(imageUrl, title);
 
+    // Create and append card body
+    const cardBody = createCardBody(title);
+
+    // Append the image and card body to the card
+    cardDiv.appendChild(img);
+    cardDiv.appendChild(cardBody);
+    colDiv.appendChild(cardDiv);
+
+    // Add event listener for card click
+    cardDiv.addEventListener('click', () => openBookModal(isbn));
+
+    return colDiv;
+}
+
+// Create and return image element with lazy loading
+function createImageElement(imageUrl, altText) {
+    const img = document.createElement('img');
+    img.className = 'card-img-top lazy';
+    img.dataset.src = imageUrl;  // Use data-src for lazy loading
+    img.alt = altText;
+
+    // Fallback for broken image links
+    img.onerror = () => {
+        img.src = 'https://via.placeholder.com/150?text=No+Cover'; // Fallback image
+    };
+
+    return img;
+}
+
+// Create and return the card body with title
+function createCardBody(title) {
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body';
 
@@ -143,57 +131,53 @@ function createBookCard(title, imageUrl, isbn) {
     cardTitle.textContent = title;
 
     cardBody.appendChild(cardTitle);
-    cardDiv.appendChild(img);
-    cardDiv.appendChild(cardBody);
-    colDiv.appendChild(cardDiv);
 
-    cardDiv.addEventListener('click', () => {
-        openBookModal(isbn);
-    });
-
-    return colDiv;
+    return cardBody;
 }
 
 // Function to display books from cached or fetched data
 function displayBooks(books) {
-    booksContainer.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     books.forEach(book => {
         const bookCard = createBookCard(book.title, book.imageUrl, book.isbn);
-        booksContainer.appendChild(bookCard);
+        fragment.appendChild(bookCard);
+    });
+
+    booksContainer.innerHTML = '';  // Clear the current display
+    booksContainer.appendChild(fragment);  // Batch append
+
+    // Trigger lazy loading after books are displayed
+    lazyLoadImages();
+}
+
+// Lazy load images using Intersection Observer API
+function lazyLoadImages() {
+    const images = document.querySelectorAll('img.lazy');
+    const options = {
+        rootMargin: '0px 0px 200px 0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;  // Load the actual image
+                img.classList.remove('lazy');
+                observer.unobserve(img);
+            }
+        });
+    }, options);
+
+    images.forEach(image => {
+        observer.observe(image);
     });
 }
 
-// Preload images before displaying them
-function preloadImages(imageUrls) {
-    imageUrls.forEach(url => {
-        const img = new Image();
-        img.src = url;
-    });
-}
-
-// Load all books from ISBN-array using fetchBookSummaryData for basic display
-async function loadBooks() {
-    const books = [];
-
-    for (const isbn of isbnList) {
-        const bookData = await fetchBookSummaryData(isbn);
-        books.push({ title: bookData.title, imageUrl: bookData.imageUrl, isbn: isbn });
-    }
-
-    preloadImages(imageUrls);
-
-    localStorage.setItem('books', JSON.stringify(books));
-
-    // Display books on page
-    displayBooks(books);
-}
-
-
+// Initialize the page
 document.addEventListener("DOMContentLoaded", () => {
-    const booksContainer = document.getElementById("books-container");
-    
     if (booksContainer) {
         // Load books when page is loaded
         checkForCachedBooks();
-    } 
+    }
 });

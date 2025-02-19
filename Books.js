@@ -218,9 +218,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-/* 
-Used for development: 
+// Used for development:
 
-window.addEventListener('beforeunload', () => {
+/* window.addEventListener('beforeunload', () => {
     localStorage.clear(); // Tömmer hela localStorage
-}); */
+});  */

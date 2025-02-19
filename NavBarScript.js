@@ -59,6 +59,7 @@ function showNotification(message) {
 }
 
 function addToCart(bookData) {
+    console.log('Adding to cart:', bookData); 
     const existing = cart.find(item => item.isbn === bookData.isbn);
     if (existing) {
         existing.quantity++;

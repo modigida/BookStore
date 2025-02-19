@@ -28,7 +28,14 @@
                 <i id="toggle-icon" class="bi bi-grid" aria-hidden="true"></i>
             </button>
         </div>
-        
+
+        <div id="loading-container" class="d-flex justify-content-center align-items-center mb-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <span class="ms-2">Loading books...</span>
+        </div>
+
         <div id="books-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4"></div>
     </div>
 
@@ -70,5 +77,6 @@
     <script src="Books.js" defer></script>
     <script src="NavBarScript.js" defer></script>
 </body>
+
 
 </html>

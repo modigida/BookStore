@@ -4,10 +4,10 @@ const booksContainer = document.getElementById('books-container');
 
 // Array with ISBN for accessible books
 const isbnList = [
-    '9789152731130'/* , '9780375842207', '9780571365470', '9780385490818',
+    '9789152731130', '9780375842207', '9780571365470', '9780385490818',
     '9781408728512', '9780743273565', '9780374602604', '9781476738017',
     '9781250301697', '9780735219090', '9780143469131', '9780525559474',
-    '9780399590504', '9781471156267', '9780062797155', '9780399167065' */
+    '9780399590504', '9781471156267', '9780062797155', '9780399167065' 
 ];
 
 // Check if books are already in localStorage with expiry
@@ -225,4 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+/* 
+Used for development: 
 
+window.addEventListener('beforeunload', () => {
+    localStorage.clear(); // Tömmer hela localStorage
+}); */

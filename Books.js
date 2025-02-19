@@ -10,6 +10,9 @@ const isbnList = [
     '9780399590504', '9781471156267', '9780062797155', '9780399167065' 
 ];
 
+let books = [];
+
+
 // Check if books are already in localStorage with expiry
 function checkForCachedBooks() {
     console.log("Checking for cached books...");
@@ -179,17 +182,17 @@ function createCardBody(title) {
 }
 
 // Function to display books from cached or fetched data
-function displayBooks(books) {
+function displayBooks(bookList) {
+    books = bookList; // Uppdatera den globala listan
     const fragment = document.createDocumentFragment();
-    books.forEach(book => {
+    bookList.forEach(book => {
         const bookCard = createBookCard(book.title, book.imageUrl, book.isbn);
         fragment.appendChild(bookCard);
     });
 
-    booksContainer.innerHTML = '';  // Clear the current display
-    booksContainer.appendChild(fragment);  // Batch append
+    booksContainer.innerHTML = '';  
+    booksContainer.appendChild(fragment);  
 
-    // Trigger lazy loading after books are displayed
     lazyLoadImages();
 }
 
@@ -216,6 +219,24 @@ function lazyLoadImages() {
         observer.observe(image);
     });
 }
+
+function openBookModal(isbn) {
+    const book = books.find(b => b.isbn === isbn); // Hitta boken i den cachade listan
+
+    if (!book) {
+        console.error("Boken hittades inte.");
+        return;
+    }
+
+    document.getElementById('bookModalLabel').textContent = book.title;
+    document.getElementById('bookModalImage').src = book.imageUrl;
+    document.getElementById('bookModalISBN').textContent = isbn;
+
+    // Öppna modalen
+    const modal = new bootstrap.Modal(document.getElementById('bookModal'));
+    modal.show();
+}
+
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", () => {

@@ -34,43 +34,11 @@ function initializeCart() {
     window.addToCart = addToCart;
     window.incrementQuantity = incrementQuantity;
     window.decrementQuantity = decrementQuantity;
-    window.openBookModalFromCart = openBookModalFromCart;
 
     updateCart();
 }
 
-async function openBookModal(isbn) {
-    const bookData = await fetchBookData(isbn);
 
-    document.getElementById('bookModalLabel').textContent = bookData.title;
-    document.getElementById('bookModalImage').src = bookData.imageUrl;
-    
-    const author = bookData.authors ? bookData.authors.join(', ') : 'Okänd';
-    document.getElementById('bookModalAuthor').textContent = author;
-
-    const addToCartButton = document.getElementById('add-to-cart-btn');
-    if (addToCartButton) {
-        addToCartButton.replaceWith(addToCartButton.cloneNode(true));
-        const freshAddToCartButton = document.getElementById('add-to-cart-btn');
-
-        freshAddToCartButton.addEventListener('click', () => {
-            addToCart(bookData);
-
-            showNotification("Bok tillagd i varukorg");
-            
-            const modalEl = document.getElementById('bookModal');
-            const modalInstance = bootstrap.Modal.getInstance(modalEl);
-            if (modalInstance) {
-                modalInstance.hide();
-            }
-        });
-    } else {
-        console.error("Kunde inte hitta knappen 'add-to-cart-btn' i modalen!");
-    }
-
-    const myModal = new bootstrap.Modal(document.getElementById('bookModal'));
-    myModal.show();
-}
 
 function showNotification(message) {
     const notif = document.createElement('div');
@@ -144,8 +112,8 @@ function updateCart() {
             cartDropdown.innerHTML += `
                 <li class="dropdown-item">
                     <div class="d-flex align-items-center">
-                        <img src="${item.imageUrl}" alt="${item.name}" style="width:40px; cursor:pointer;" onclick="openBookModalFromCart('${item.isbn}')">
-                        <span class="cart-title" style="margin-left: 10px; cursor:pointer;" onclick="openBookModalFromCart('${item.isbn}')">${item.name}</span>
+                        <img src="${item.imageUrl}" alt="${item.name}" style="width:40px;">
+                        <span class="cart-title" style="margin-left: 10px; cursor:default;">${item.name}</span>
                         <div class="ms-auto d-flex align-items-center">
                             <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation(); decrementQuantity('${item.isbn}')">-</button>
                             <span class="mx-2">${item.quantity}</span>
@@ -161,9 +129,6 @@ function updateCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-function openBookModalFromCart(isbn) {
-    openBookModal(isbn);
-}
 
 async function fetchBookData(isbn) {
     const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;

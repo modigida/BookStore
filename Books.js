@@ -2,7 +2,6 @@ const toggleBtn = document.getElementById('toggle-view-btn');
 const toggleIcon = document.getElementById('toggle-icon');
 const booksContainer = document.getElementById('books-container');
 
-// Array with ISBN for accessible books
 const isbnList = [
     '9789152731130', '9780375842207', '9780571365470', '9780385490818',
     '9781408728512', '9780743273565', '9780374602604', '9781476738017',
@@ -12,19 +11,15 @@ const isbnList = [
 
 let books = [];
 
-
-// Check if books are already in localStorage with expiry
 function checkForCachedBooks() {
     console.log("Checking for cached books...");
     const cachedBooks = localStorage.getItem('books');
     const cacheTimestamp = localStorage.getItem('cacheTimestamp');
     const now = Date.now();
 
-    if (cachedBooks && cacheTimestamp && now - cacheTimestamp < 86400000) {  // 24 hours in ms
-        // If cached books exist and are not expired, load them from storage
+    if (cachedBooks && cacheTimestamp && now - cacheTimestamp < 86400000) {
         displayBooks(JSON.parse(cachedBooks));
     } else {
-        // If no cached books, or expired, fetch and store them
         loadBooks();
     }
 }
@@ -41,11 +36,10 @@ if (toggleBtn && toggleIcon && booksContainer) {
             toggleIcon.classList.toggle('bi-list', !isGridView);
             booksContainer.classList.toggle('row', isGridView);
             booksContainer.classList.toggle('list-view', !isGridView);
-        }, 200);  // Adjust debounce delay for user interaction
+        }, 200);
     });
 }
 
-// Fetch book summary data (title and image)
 async function fetchBookSummaryData(isbn) {
     const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
     try {
@@ -56,8 +50,7 @@ async function fetchBookSummaryData(isbn) {
             const book = data[bookKey];
             const imageUrl = book.cover ? book.cover.medium : 'https://via.placeholder.com/150?text=No+Cover';
 
-            // Konvertera till WebP eller AVIF
-            const convertedImage = await convertImageToFormat(imageUrl, 'webp'); // Ändra till 'avif' om du föredrar det
+            const convertedImage = await convertImageToFormat(imageUrl, 'webp'); 
 
             return {
                 title: book.title,
@@ -74,7 +67,7 @@ async function fetchBookSummaryData(isbn) {
 async function convertImageToFormat(imageUrl, format = 'webp') {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        img.crossOrigin = 'anonymous'; // För att undvika CORS-problem
+        img.crossOrigin = 'anonymous'; 
         img.src = imageUrl;
 
         img.onload = () => {
@@ -85,23 +78,18 @@ async function convertImageToFormat(imageUrl, format = 'webp') {
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
 
-            // Konvertera bilden till önskat format (webp eller avif)
             const convertedImageUrl = canvas.toDataURL(`image/${format}`);
-
             console.log(convertedImageUrl);
-
             resolve(convertedImageUrl);
         };
 
         img.onerror = () => {
             console.error(`Failed to load image: ${imageUrl}`);
-            resolve(imageUrl); // Använd originalbilden om konverteringen misslyckas
+            resolve(imageUrl); 
         };
     });
 }
 
-
-// Load all books from ISBN-array using fetchBookSummaryData for basic display
 async function loadBooks() {
     const books = [];
     for (const isbn of isbnList) {
@@ -109,15 +97,12 @@ async function loadBooks() {
         books.push({ title: bookData.title, imageUrl: bookData.imageUrl, isbn: isbn });
     }
 
-    // Store in localStorage
     localStorage.setItem('books', JSON.stringify(books));
-    localStorage.setItem('cacheTimestamp', Date.now());  // Update cache timestamp
+    localStorage.setItem('cacheTimestamp', Date.now()); 
 
-    // Display books on page
     displayBooks(books);
 }
 
-// Create book item and add to DOM (using fetchBookSummaryData)
 function createBookCard(title, imageUrl, isbn) {
     const colDiv = document.createElement('div');
     colDiv.className = 'col book-item';
@@ -127,37 +112,29 @@ function createBookCard(title, imageUrl, isbn) {
     cardDiv.className = 'card';
     cardDiv.dataset.isbn = isbn;
 
-    // Create and append image with lazy loading
     const img = createImageElement(imageUrl, title);
-
-    // Create and append card body
     const cardBody = createCardBody(title);
 
-    // Append the image and card body to the card
     cardDiv.appendChild(img);
     cardDiv.appendChild(cardBody);
     colDiv.appendChild(cardDiv);
 
-    // Add event listener for card click
     cardDiv.addEventListener('click', () => openBookModal(isbn));
 
     return colDiv;
 }
 
-// Create and return image element with lazy loading
 function createImageElement(imageUrl, title) {
     let altText = "Cover image of " + title;
     const img = document.createElement('img');
     img.className = 'card-img-top lazy';
-    img.dataset.src = imageUrl;  // Lazy loading
+    img.dataset.src = imageUrl;
     img.alt = altText;
 
-    // Sätt en fast höjd och en flexibel bredd
-    img.style.height = '200px';  // Anpassa efter behov
-    img.style.width = '100%';  // Fyller hela card-bredden
-    img.style.objectFit = 'contain';  // Ser till att hela bilden visas utan beskärning
+    img.style.height = '200px'; 
+    img.style.width = '100%';
+    img.style.objectFit = 'contain'; 
 
-    // Fallback för brutna bildlänkar
     img.onerror = () => {
         img.src = 'https://via.placeholder.com/150?text=No+Cover';
     };
@@ -165,9 +142,6 @@ function createImageElement(imageUrl, title) {
     return img;
 }
 
-
-
-// Create and return the card body with title
 function createCardBody(title) {
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body';
@@ -181,9 +155,8 @@ function createCardBody(title) {
     return cardBody;
 }
 
-// Function to display books from cached or fetched data
 function displayBooks(bookList) {
-    books = bookList; // Uppdatera den globala listan
+    books = bookList;
     const fragment = document.createDocumentFragment();
     bookList.forEach(book => {
         const bookCard = createBookCard(book.title, book.imageUrl, book.isbn);
@@ -196,7 +169,6 @@ function displayBooks(bookList) {
     lazyLoadImages();
 }
 
-// Lazy load images using Intersection Observer API
 function lazyLoadImages() {
     const images = document.querySelectorAll('img.lazy');
     const options = {
@@ -208,7 +180,7 @@ function lazyLoadImages() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const img = entry.target;
-                img.src = img.dataset.src;  // Load the actual image
+                img.src = img.dataset.src;
                 img.classList.remove('lazy');
                 observer.unobserve(img);
             }
@@ -221,18 +193,14 @@ function lazyLoadImages() {
 }
 
 function openBookModal(isbn) {
-    const book = books.find(b => b.isbn === isbn); // Hitta boken i den cachade listan
+    const book = books.find(b => b.isbn === isbn);
 
-    if (!book) {
-        console.error("Boken hittades inte.");
-        return;
-    }
+    if (!book) { console.error("Boken hittades inte."); return; }
 
     document.getElementById('bookModalLabel').textContent = book.title;
     document.getElementById('bookModalImage').src = book.imageUrl;
     document.getElementById('bookModalISBN').textContent = isbn;
 
-    // Öppna modalen
     const modal = new bootstrap.Modal(document.getElementById('bookModal'));
     modal.show();
 }
@@ -244,12 +212,8 @@ const closeModal = () => {
     document.getElementById("openModalButton").focus();
 };
 
-
-
-// Initialize the page
 document.addEventListener("DOMContentLoaded", () => {
     if (booksContainer) {
-        // Load books when page is loaded
         checkForCachedBooks();
     }
 });

@@ -38,8 +38,6 @@ function initializeCart() {
     updateCart();
 }
 
-
-
 function showNotification(message) {
     const notif = document.createElement('div');
     notif.className = 'notification';
@@ -128,7 +126,6 @@ function updateCart() {
 
     localStorage.setItem('cart', JSON.stringify(cart));
 }
-
 
 async function fetchBookData(isbn) {
     const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;

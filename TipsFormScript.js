@@ -1,23 +1,17 @@
-    // Fetch formular
     const form = document.getElementById("tipsForm");
 
     form.addEventListener("submit", function (event) {
-        // Prevent page reload
         event.preventDefault();
 
-        // Display message
         const modalBody = document.querySelector("#tipsModal .modal-body");
         modalBody.innerHTML = `<div class="alert alert-success" role="alert">Tack för tipset!</div>`;
 
-        // Close modal after 2 sec
         setTimeout(() => {
             const tipsModal = bootstrap.Modal.getInstance(document.getElementById("tipsModal"));
             tipsModal.hide();
 
-            // Reset formular
             form.reset();
 
-            // Reset modal 
             modalBody.innerHTML = `
                 <form id="tipsForm">
                     <div class="mb-3">

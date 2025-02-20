@@ -222,24 +222,59 @@ function lazyLoadImages() {
     });
 }
 
-function openBookModal(isbn) {
+async function openBookModal(isbn) {
     const book = books.find(b => b.isbn === isbn);
-
-    if (!book) { console.error("Boken hittades inte."); return; }
+    if (!book) {
+        console.error("Boken hittades inte.");
+        return;
+    }
 
     document.getElementById('bookModalLabel').textContent = book.title;
     document.getElementById('bookModalImage').src = book.imageUrl;
     document.getElementById('bookModalISBN').textContent = isbn;
 
+    const details = await fetchBookDetails(isbn);
+    document.getElementById('bookModalAuthor').textContent = details.author;
+    document.getElementById('bookModalPages').textContent = details.pages;
+    document.getElementById('bookModalPublisher').textContent = details.publisher;
+    document.getElementById('bookModalPublishDate').textContent = details.publishYear;
+    document.getElementById('bookModalPublishPlace').textContent = details.publishPlace;
+
     const modal = new bootstrap.Modal(document.getElementById('bookModal'));
     modal.show();
-
-    const addToCartBtn = document.getElementById('add-to-cart-btn');
-    addToCartBtn.onclick = function () {
-        addToCart(book);
-        showNotification(`${book.title} har lagts till i varukorgen!`);
-    };
 }
+
+async function fetchBookDetails(isbn) {
+    const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const bookKey = `ISBN:${isbn}`;
+        
+        if (data[bookKey]) {
+            const book = data[bookKey];
+
+            return {
+                author: book.authors ? book.authors.map(a => a.name).join(', ') : 'Okänd',
+                pages: book.number_of_pages ? `${book.number_of_pages} sidor` : 'Okänt antal sidor',
+                publisher: book.publishers ? book.publishers.map(p => p.name).join(', ') : 'Okänt förlag',
+                publishYear: book.publish_date ? extractYear(book.publish_date) : 'Okänt publiceringsår',
+                publishPlace: book.publish_places ? book.publish_places.map(p => p.name).join(', ') : 'Okänd plats'
+            };
+        }
+
+        return { author: 'Okänd', pages: 'Okänt antal sidor', publisher: 'Okänt förlag', publishYear: 'Okänt publiceringsår', publishPlace: 'Okänd plats' };
+    } catch (error) {
+        console.error(`Fel vid hämtning av detaljer för ISBN: ${isbn}`, error);
+        return { author: 'Fel vid hämtning', pages: 'Okänt antal sidor', publisher: 'Okänt förlag', publishYear: 'Okänt publiceringsår', publishPlace: 'Okänd plats' };
+    }
+}
+
+function extractYear(dateString) {
+    const match = dateString.match(/\d{4}/);
+    return match ? match[0] : 'Okänt publiceringsår';
+}
+
 
 const closeModal = () => {
     const modal = document.getElementById("modal");

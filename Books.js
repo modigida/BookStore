@@ -242,6 +242,12 @@ async function openBookModal(isbn) {
 
     const modal = new bootstrap.Modal(document.getElementById('bookModal'));
     modal.show();
+
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    addToCartBtn.onclick = function () {
+        addToCart(book);
+        showNotification(`${book.title} har lagts till i varukorgen!`);
+    };
 }
 
 async function fetchBookDetails(isbn) {
@@ -274,14 +280,6 @@ function extractYear(dateString) {
     const match = dateString.match(/\d{4}/);
     return match ? match[0] : 'Okänt publiceringsår';
 }
-
-
-const closeModal = () => {
-    const modal = document.getElementById("modal");
-    modal.setAttribute("aria-hidden", "true");
-
-    document.getElementById("openModalButton").focus();
-};
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOMContentLoaded event triggered.");

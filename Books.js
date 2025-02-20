@@ -117,7 +117,6 @@ async function loadBooks() {
     loadNextBatch(); 
 }
 
-
 function createBookCard(title, imageUrl, isbn) {
     const colDiv = document.createElement('div');
     colDiv.className = 'col book-item';
@@ -185,7 +184,6 @@ function displayBooks(bookList) {
 
     lazyLoadImages(); 
 }
-
 
 function lazyLoadImages() {
     const images = document.querySelectorAll('img.lazy');

@@ -30,22 +30,6 @@ function checkForCachedBooks() {
     }
 }
 
-if (toggleBtn && toggleIcon && booksContainer) {
-    let isGridView = true;
-    let debounceTimeout;
-
-    toggleBtn.addEventListener('click', () => {
-        clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(() => {
-            isGridView = !isGridView;
-            toggleIcon.classList.toggle('bi-grid', isGridView);
-            toggleIcon.classList.toggle('bi-list', !isGridView);
-            booksContainer.classList.toggle('row', isGridView);
-            booksContainer.classList.toggle('list-view', !isGridView);
-        }, 200);
-    });
-}
-
 async function fetchBookSummaryData(isbn) {
     const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
     try {
@@ -143,8 +127,8 @@ function createBookCard(title, imageUrl, isbn) {
     cardDiv.className = 'card';
     cardDiv.dataset.isbn = isbn;
 
-    const img = createImageElement(imageUrl, title);
-    const cardBody = createCardBody(title);
+    const img = createImageElement(imageUrl, title, isbn);
+    const cardBody = createCardBody(title, isbn);
 
     cardDiv.appendChild(img);
     cardDiv.appendChild(cardBody);
@@ -155,12 +139,14 @@ function createBookCard(title, imageUrl, isbn) {
     return colDiv;
 }
 
-function createImageElement(imageUrl, title) {
+function createImageElement(imageUrl, title, isbn) {
     let altText = "Cover image of " + title;
     const img = document.createElement('img');
     img.className = 'card-img-top lazy';
     img.dataset.src = imageUrl;
     img.alt = altText;
+
+    img.id = `image-${isbn}`;
 
     img.style.height = '200px'; 
     img.style.width = '100%';
@@ -173,13 +159,15 @@ function createImageElement(imageUrl, title) {
     return img;
 }
 
-function createCardBody(title) {
+function createCardBody(title, isbn) {
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body';
 
     const cardTitle = document.createElement('h5');
     cardTitle.className = 'card-title';
     cardTitle.textContent = title;
+
+    cardTitle.id = `title-${isbn}`;
 
     cardBody.appendChild(cardTitle);
 

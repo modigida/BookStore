@@ -41,40 +41,20 @@ h1 {
     border-width: 0.3em;
 }
 
-.list-view .book-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    width: 100%;
-}
-
-.list-view .book-item .card {
-    flex-direction: row;
-    border: none;
-    box-shadow: none;
-}
-
-.list-view .card-img-top {
-    width: 150px;
-    height: auto;
-    margin-right: 1rem;
-}
-
-.list-view .card-body {
-    flex-grow: 1;
-}
-
 .card {
     background-color: transparent;
     border: none; 
 }
 
 .card-body {
+    display: flex;
     text-align: center;
+    display: flex;
 }
 
 .card-title {
     margin-top: 10px; 
+    text-align: center;
     font-size: 1.5rem; 
     color: #51292B;
 }
@@ -87,32 +67,6 @@ h1 {
 
 .book-item {
     cursor: pointer;
-}
-
-/* Layout Toggle Buttons */
-#toggle-view-btn {
-    background-color: #F2F1D5;
-    border-color: #51292B;
-    transition: all 0.3s ease;
-}
-
-#toggle-view-btn:hover {
-    background-color: #F2F1D5;
-    border-color: #51292B;
-    scale: 110%;
-}
-
-#toggle-icon {
-    color: #51292B;
-    transition: color 0.3s ease;
-}
-
-#toggle-icon.bi-grid {
-    color: #51292B;
-}
-
-#toggle-icon.bi-list {
-    color: #51292B;
 }
 
 .modal .modal-book-content .modal-body,

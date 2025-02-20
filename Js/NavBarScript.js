@@ -1,14 +1,63 @@
-fetch('navbar.html')
+fetch('../Html/Navbar.html')
     .then(response => response.text())
     .then(data => {
-
         console.log("Load navbar");
         
         document.getElementById('navbar-placeholder').innerHTML = data;
 
+        fetch('../Html/Footer.html')
+            .then(response => response.text())
+            .then(footerData => {
+                console.log("Load footer");
+                document.getElementById('footer-placeholder').innerHTML = footerData;
+            })
+            .catch(error => console.log("Fel vid laddning av footer:", error));
+
+        const currentPath = window.location.pathname;
+        console.log(currentPath);
+        const navbarLinks = document.querySelectorAll('.navbar-nav a');
+
+        navbarLinks.forEach(link => {
+            let href = link.getAttribute('href');
+
+            console.log(`Länk href: ${href}`);
+            
+            if (currentPath.includes("Html/")) {
+                console.log("Html included");
+                if (href === "Html/Books.html") {
+                    link.setAttribute('href', "../Html/Books.html");
+                }
+                if (href === "Html/About.html") {
+                    link.setAttribute('href', "../Html/About.html");
+                }
+                if (href === "Html/NavBar.html") {
+                    link.setAttribute('href', "../Html/NavBar.html");
+                }
+                if (href === "Html/Footer.html") {
+                    link.setAttribute('href', "../Html/Footer.html");
+                }
+            } else if (currentPath.includes("Index.html")) {
+                console.log("Index included");
+                if (href === "Html/Books.html") {
+                    link.setAttribute('href', "Html/Books.html");
+                }
+                if (href === "Html/About.html") {
+                    link.setAttribute('href', "Html/About.html");
+                }
+                if (href === "Html/NavBar.html") {
+                    link.setAttribute('href', "Html/NavBar.html");
+                }
+                if (href === "Html/Footer.html") {
+                    link.setAttribute('href', "Html/Footer.html");
+                }
+            }
+        });
+
         initializeCart();
+
     })
     .catch(error => console.log("Fel vid laddning av navbar:", error));
+
 
 let cart = [];
 

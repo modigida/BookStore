@@ -9,7 +9,7 @@ a {
 }
 
 .hero {
-    background-image: url("Images/BookStoreHeroImage.webp");
+    background-image: url("https://modigida.github.io/BookStore/Images/BookStoreHeroImage.webp");
     background-size: cover;
     background-position: center;
     height: 500px;

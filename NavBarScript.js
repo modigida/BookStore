@@ -1,4 +1,4 @@
-fetch('Navbar.html')
+fetch('NavBar.html')
     .then(response => response.text())
     .then(data => {
 

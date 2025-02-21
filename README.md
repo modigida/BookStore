@@ -21,3 +21,16 @@ Jag har valt att göra en hemsida för en lokal (påhittad) bokhandel. På hemsi
 
 För att uppnå VG på uppgiften krävedes över 90 % på samtliga sidor i både mobile- och desktop läge på Lighthouse. Nedan följer skärmbilder för Lighthouse resultaten:
 
+Lighthouse resultat för index.html i desktop mode samt mobile mode: </br>
+<img src="Lighthouse/indexHtmlDesktop.jpg" alt="Lighhouse result for index.html desktop mode" width="300" > <img src="Lighthouse/indexHtmlMobile.jpg" alt="Lighhouse result for index.html mobile mode" width="300" >
+</br></br>
+Lighthouse resultat för Books.html i desktop mode samt mobile mode: </br>
+<img src="Lighthouse/booksHtmlDesktop.jpg" alt="Lighhouse result for Books.html desktop mode" width="300" > <img src="Lighthouse/booksHtmlMobile.jpg" alt="Lighhouse result for Books.html mobile mode" width="300" >
+</br></br>
+Lighthouse resultat för About.html i desktop mode samt mobile mode: </br>
+<img src="Lighthouse/aboutHtmlDesktop.jpg" alt="Lighhouse result for About.html desktop mode" width="300" > <img src="Lighthouse/aboutHtmlMobile.jpg" alt="Lighhouse result for About.html mobile mode" width="300" >
+
+
+
+
+
